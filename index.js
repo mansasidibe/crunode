@@ -56,3 +56,19 @@ app.get('/produits/:id', (req, res) => {
             console.log(err);
     });
 });
+
+// VOUS POUVEZ INSTALLER NODEMON ET FAIRE LANCEMENT GLOBAL "nodemon index.js"
+
+// LA FONCTION GET POUR UN ELEMENT
+app.delete('/produits/:id', (req, res) => {
+
+    // LA REQUETE QUI ENVOIE LES DONNEES
+    connection.query('DELETE FROM produits WHERE ProdId = ?', [req.params.id], (err, rows, fiels) => {
+        if (!err)
+            // S'IL N'YA PAS D'ERREUR
+            res.send("élément supprimé avec succès");
+        else
+            // S'IL YA UNE ERREUR
+            console.log(err);
+    });
+});
