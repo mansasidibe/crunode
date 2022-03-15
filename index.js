@@ -36,7 +36,21 @@ app.get('/produits', (req, res) => {
     connection.query('SELECT * FROM produits', (err, rows, fiels) => {
         if (!err)
             // S'IL N'YA PAS D'ERREUR
-            console.log(rows);
+            res.send(rows);
+        else
+            // S'IL YA UNE ERREUR
+            console.log(err);
+    });
+});
+
+// LA FONCTION GET POUR UN ELEMENT
+app.get('/produits/:id', (req, res) => {
+
+    // LA REQUETE QUI ENVOIE LES DONNEES
+    connection.query('SELECT * FROM produits WHERE ProdId = ?', [req.params.id], (err, rows, fiels) => {
+        if (!err)
+            // S'IL N'YA PAS D'ERREUR
+            res.send(rows);
         else
             // S'IL YA UNE ERREUR
             console.log(err);
