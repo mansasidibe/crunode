@@ -78,13 +78,33 @@ app.delete('/produits/:id', (req, res) => {
 app.post('/produits', (req, res) => {
     let pro = req.body;
     // LES CHAMPS DU FORMULAIRE ICI
-    var sql ="SET @ProdId = ?; nomProd = ?; prixProd = ? CALL ProduitAddOrEdit(@ProdIt, @nomProd, prixProd);";
+    var sql = "SET @ProdId = ?; nomProd = ?; prixProd = ? CALL ProduitAddOrEdit(@ProdIt, @nomProd, prixProd);";
 
     // LA REQUETE QUI ENVOIE LES DONNEES
     connection.query(sql, [pro.ProdId, pro.nomProd, pro.prixPro], [req.params.id], (err, rows, fiels) => {
         if (!err)
             // S'IL N'YA PAS D'ERREUR
-            res.send(rows);
+            rows.forEach(element => {
+                if (element.constructor == Array)
+                    res.send('le produit ajouté avec succès, l\'id ' + element[0].ProdId);
+            });
+        else
+            // S'IL YA UNE ERREUR
+            console.log(err);
+    });
+});
+
+// LA FONCTION UPDATE POUR UN ELEMENT
+app.put('/produits', (req, res) => {
+    let pro = req.body;
+    // LES CHAMPS DU FORMULAIRE ICI
+    var sql = "SET @ProdId = ?; nomProd = ?; prixProd = ? CALL ProduitAddOrEdit(@ProdIt, @nomProd, prixProd);";
+
+    // LA REQUETE QUI ENVOIE LES DONNEES
+    connection.query(sql, [pro.ProdId, pro.nomProd, pro.prixPro], [req.params.id], (err, rows, fiels) => {
+        if (!err)
+            // S'IL N'YA PAS D'ERREUR
+            res.send('le produit a été modifié avec succes');
         else
             // S'IL YA UNE ERREUR
             console.log(err);
