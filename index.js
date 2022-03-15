@@ -13,7 +13,8 @@ var connection = mysql.createConnection({
     host: 'localhost',
     user: 'root', // VOTRE NOM D'UTILISATEUR DE MYSQL
     password: '', // VOTRE MOT DE PASSE
-    database: 'my_db' // VOTRE BASE DE DONNEES
+    database: 'my_db', // VOTRE BASE DE DONNEES
+    multipleStatements: true
 });
 
 // MESSAGE D'ETAT DE LA CONNEXION 
@@ -59,7 +60,7 @@ app.get('/produits/:id', (req, res) => {
 
 // VOUS POUVEZ INSTALLER NODEMON ET FAIRE LANCEMENT GLOBAL "nodemon index.js"
 
-// LA FONCTION GET POUR UN ELEMENT
+// LA FONCTION DELETE POUR UN ELEMENT
 app.delete('/produits/:id', (req, res) => {
 
     // LA REQUETE QUI ENVOIE LES DONNEES
@@ -67,6 +68,23 @@ app.delete('/produits/:id', (req, res) => {
         if (!err)
             // S'IL N'YA PAS D'ERREUR
             res.send("élément supprimé avec succès");
+        else
+            // S'IL YA UNE ERREUR
+            console.log(err);
+    });
+});
+
+// LA FONCTION INSERT POUR UN ELEMENT
+app.post('/produits', (req, res) => {
+    let pro = req.body;
+    // LES CHAMPS DU FORMULAIRE ICI
+    var sql ="SET @ProdId = ?; nomProd = ?; prixProd = ? CALL ProduitAddOrEdit(@ProdIt, @nomProd, prixProd);";
+
+    // LA REQUETE QUI ENVOIE LES DONNEES
+    connection.query(sql, [pro.ProdId, pro.nomProd, pro.prixPro], [req.params.id], (err, rows, fiels) => {
+        if (!err)
+            // S'IL N'YA PAS D'ERREUR
+            res.send(rows);
         else
             // S'IL YA UNE ERREUR
             console.log(err);
